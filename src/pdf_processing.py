@@ -1,5 +1,5 @@
 from PyPDF2 import PdfReader # Use Case: To read PDF files
-from langchain.text_splitter import CharacterTextSplitter 
+from langchain.text_splitter import CharacterTextSplitter # Use Case: To split text data into managable chunks
 
 def extract_text_from_pdf(file_path: str) -> str:
     """
