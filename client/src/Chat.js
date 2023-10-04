@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -6,7 +7,7 @@ const Chat = () => {
 
   const senderName = 'You';
   const botName = 'Virtual TA';
-  
+
   const messageContainerRef = useRef(null);
 
   const handleInputChange = (e) => {
@@ -60,9 +61,13 @@ const Chat = () => {
   }, [messages]);
 
   const simulateBackendResponse = async (userMessageText) => {
-    // Simulate fetching data from the backend
-    // Make API call here!
-    return userMessageText; // For testing the bot's response echos user's input
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/api/ask', { question: userMessageText });
+      return response.data.response;
+    } catch (error) {
+      console.error('Error fetching response from backend:', error);
+      return "Sorry, I couldn't process your request.";
+    }
   };
 
   useEffect(() => {
