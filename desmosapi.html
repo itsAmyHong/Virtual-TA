@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hello, Desmos!</title>
+		<script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+	</head>
+	<body>
+		<div id="calculator" style="width: 900px; height: 500px;"></div>
+		<script>
+			var myCalculator = Desmos.Calculator(document.getElementById('calculator'))
+			var elt1 = document.getElementById('four-function-calculator');
+			var calculator1 = Desmos.FourFunctionCalculator(elt1);
+
+			var elt2 = document.getElementById('scientific-calculator');
+			var calculator2 = Desmos.ScientificCalculator(elt2);
+
+		</script>
+	</body>
+</html>
