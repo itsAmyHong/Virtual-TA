@@ -1,5 +1,5 @@
-from PyPDF2 import PdfReader # Use Case: To read PDF files
-from langchain.text_splitter import CharacterTextSplitter # Use Case: To split text data into managable chunks
+from PyPDF2 import PdfReader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 def extract_text_from_pdf(file_path: str) -> str:
     """
@@ -20,9 +20,11 @@ def split_text(raw_text: str):
     • raw_text: The raw text extracted from the PDF.
     • returns: A list containing chunks of text.
     """
-
-    # chunk_size defines the maximum number of characters per chunk
-    # chunk_overlap defines the maximum number of overlapping characters between chunks
-    # length_function defines how the number of characters per chunk will be counted.
-    text_splitter = CharacterTextSplitter(separator="\n", chunk_size=50, chunk_overlap=0, length_function=len)
-    return text_splitter.split_text(raw_text)
+    text_splitter = RecursiveCharacterTextSplitter( 
+        chunk_size=1000, # The number of tokens per chunk
+        chunk_overlap=200, # The number of tokens that overlap between chunks
+        length_function=len # How the size of each chunk is measured
+        )
+    
+    chunks = text_splitter.split_text(raw_text)
+    return chunks
