@@ -1,8 +1,8 @@
 from dotenv import load_dotenv
-import openai
+import openai # Temporary
 import os
 from langchain.embeddings import HuggingFaceBgeEmbeddings
-from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.embeddings.openai import OpenAIEmbeddings # Temporary
 from langchain.vectorstores import FAISS     
 
 # This is temporary until we get an open-source llm
