@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
+import MathKeyboard from './MathKeyboard';
+
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -9,6 +11,8 @@ const Chat = () => {
   const botName = 'Virtual TA';
 
   const messageContainerRef = useRef(null);
+
+  const [showKeyboard, setShowKeyboard] = useState(false);
 
   const handleInputChange = (e) => {
     setInputText(e.target.value);
@@ -77,6 +81,15 @@ const Chat = () => {
     }
   }, [messages]);
 
+  const handleOpenKeyboard = () => {
+    setShowKeyboard(true);
+  };
+
+  const handleInsertMath = (math) => {
+    setInputText((prevInput) => prevInput + math);
+    setShowKeyboard(false);
+  };
+
   return (
     <div className="chat-container">
 
@@ -99,13 +112,15 @@ const Chat = () => {
       <div className="input-container">
         <input
           type="text"
-          placeholder="Type a message..."
           value={inputText}
-          onChange={handleInputChange}
+          onChange={handleInputChange} 
           onKeyPress={handleInputKeyPress}
         />
+        <button onClick={handleOpenKeyboard}>Open Math Keyboard</button>
       </div>
-
+      {showKeyboard && (
+        <MathKeyboard onSymbolClick={handleInsertMath} />
+      )}
     </div>
   );
 };
