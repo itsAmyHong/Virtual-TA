@@ -5,6 +5,8 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const senderName = 'You';
   const botName = 'Virtual TA';
 
@@ -34,6 +36,8 @@ const Chat = () => {
 
     // Clear the input field
     setInputText('');
+
+    setIsLoading(true);  // Set loading to true when sending a message
   };
 
   useEffect(() => {
@@ -45,6 +49,7 @@ const Chat = () => {
       const fetchBotResponse = async () => {
         // Fetch data from the backend
         const responseText = await simulateBackendResponse(userMessageText);
+        setIsLoading(false);  // Set loading to false when response is received
 
         // Create a new bot message
         const botResponse = {
@@ -95,6 +100,9 @@ const Chat = () => {
           </div>
         ))}
       </div>
+
+      {/* no styling done yet for the loading class */}
+      {isLoading && <div className="loading">Generating response...</div>}
 
       <div className="input-container">
         <input
