@@ -1,24 +1,32 @@
-from pdf_processing import extract_text_from_pdf, split_text
-from embedding import get_text_embeddings, search_embeddings
-from question_answering import run_qa_chain
+import os
+from dotenv import load_dotenv
+import openai
+from process_text import extract_text_from_pdf, split_text
+from embed_text import get_text_embeddings, search_embeddings
+from text_qa import run_qa_chain
 
- # Extract text from the PDF
-raw_text = extract_text_from_pdf('pdf_text/syllabus.pdf')
-print(f'Size of text: {len(raw_text)}')
+def main():
+    # Load environment variables
+    load_dotenv()
+    openai.api_key = os.getenv('OPENAI_API_KEY')
+    os.environ['TOKENIZERS_PARALLELISM'] = 'false'
 
-# Split the extracted text into chunks
-chunks = split_text(raw_text)
-print(f'Size of chunks: {len(chunks)}')
+    # Define file path and query
+    file_path = 'texts/syllabus.pdf'
+    query = 'When are the exams?'
 
-# Generate embeddings and initialize the FAISS object for similarity search
-embeddings = get_text_embeddings(chunks)
-print('\n\n')
-print(embeddings)
+    # Extract and chunk text from PDF
+    raw_text = extract_text_from_pdf(file_path)
+    chunks = split_text(raw_text)
 
-# Define the query and search for relevant document sections
-query = 'What date is the first exam?'
-documents = search_embeddings(embeddings, query)
+    # Generate embeddings and initialize the FAISS object for similarity search
+    vector_store = get_text_embeddings(chunks)
 
-# Run the QA chain to get the response for the query
-response = run_qa_chain(documents, query)
-print(response) 
+    # Search for relevant document sections and run QA chain
+    relevant_documents = search_embeddings(vector_store, query)
+    response = run_qa_chain(relevant_documents, query)
+
+    print(response)
+
+if __name__ == "__main__":
+    main()
