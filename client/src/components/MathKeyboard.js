@@ -1,41 +1,17 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
-const MathSymbolsKeyboard = ({ onSymbolClick }) => {
-  const mathSymbols = [
-    '+',
-    '-',
-    '×',
-    '÷',
-    '=',
-    '≠',
-    '≈',
-    '≥',
-    '≤',
-    '∫',
-    '∑',
-    '√',
-    '∞',
-    'π',
-    'θ',
-    'Φ',
-    'Σ',
-    'Δ',
-    '∇',
-  ];
+const MathKeyboard = () => {
+  const calculatorRef = useRef(null);
+
+  useEffect(() => {
+    if (window.Desmos && calculatorRef.current) {
+      window.Desmos.Calculator(calculatorRef.current);
+    }
+  }, []);
 
   return (
-    <div className="latex-keyboard">
-      {mathSymbols.map((symbol, index) => (
-        <button
-          key={index}
-          onClick={() => onSymbolClick(symbol)}
-          className="math-button"
-        >
-          {symbol}
-        </button>
-      ))}
-    </div>
+    <div ref={calculatorRef} style={{ width: '900px', height: '500px' }}></div>
   );
 };
 
-export default MathSymbolsKeyboard;
+export default MathKeyboard;
