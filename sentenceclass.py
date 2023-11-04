@@ -8,29 +8,33 @@ Original file is located at
 """
 
 import pandas as pd
-
+from collections import Counter
 
 def classify(sentence):
-
-    keywords_syllabus = ["syllabus", "schedule", "office hours", "grade structure"]
-    keywords_math = ["O(n)", "algorithm time complexity", "mathematics"]
-    keywords_general = ["merge sort", "binary search tree", "algorithm analysis"]
-
+    keywords_syllabus = ["syllabus", "schedule", "office hours", "grade structure", "ta","grade"
+    ,"date","assignments","assignment","section","class","term","day","days","time","times","proffesor","email","hours","office","earning Objectives","learning","final","mideterm","grading"]
+    keywords_math = ["O(n)", "algorithm time complexity", "mathematics","plus","add","subtract","derivative","integral","complexity","time","times","run time","runtime","multiply"]
+    keywords_general = ["merge sort", "binary search tree", "algorithm analysis","explain","how","does","algorithm","code","what","concept","example","analize","data","structure"]
 
     sentence = sentence.lower()
 
+    # Count how many times words in the sentence appear in each group
+    count_syllabus = sum(keyword in sentence for keyword in keywords_syllabus)
+    count_math = sum(keyword in sentence for keyword in keywords_math)
+    count_general = sum(keyword in sentence for keyword in keywords_general)
 
-    if any(keyword in sentence for keyword in keywords_syllabus):
-        return "Syllabus-related"
-    elif any(keyword in sentence for keyword in keywords_math):
-        return "Math-related"
-    elif any(keyword in sentence for keyword in keywords_general):
-        return "General"
+    # Find the most popular group
+    counts = {
+        "Syllabus-related": count_syllabus,
+        "Math-related": count_math,
+        "General": count_general,
 
-    return "Other"
+    }
+
+    most_popular_group = max(counts, key=counts.get)
+    return most_popular_group if counts[most_popular_group] > 0 else "General"
 
 input_data = pd.read_csv("VirtualTADataSet.csv", header=None)
-
 categories = []
 
 for sentence in input_data[1]:
