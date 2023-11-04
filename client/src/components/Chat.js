@@ -87,12 +87,11 @@ const Chat = () => {
   }, [messages]);
 
   const handleOpenKeyboard = () => {
-    setShowKeyboard(true);
+    setShowKeyboard(!showKeyboard);
   };
 
   const handleInsertMath = (math) => {
     setInputText((prevInput) => prevInput + math);
-    setShowKeyboard(false);
   };
 
   return (
@@ -121,7 +120,7 @@ const Chat = () => {
         <input
           type="text"
           value={inputText}
-          onChange={handleInputChange} 
+          onChange={handleInputChange}
           onKeyPress={handleInputKeyPress}
         />
         <button onClick={handleOpenKeyboard}>Open Math Keyboard</button>
