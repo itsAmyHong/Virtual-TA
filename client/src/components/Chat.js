@@ -29,6 +29,39 @@ const Chat = () => {
   const handleSendMessage = () => {
     if (inputText.trim() === '') return;
 
+    //! Stuff to try and graph the function in desmos, seems too complicated so on the backburner for now.
+    // // Check for the word "graph" in the inputText
+    // if (inputText.toLowerCase().includes('graph')) {
+    //   // Extract functions from inputText to graph
+    //   // This is a placeholder for the actual logic you would use
+    //   const functionsToGraph = extractFunctions(inputText);
+    //   // You might want to graph these functions using Desmos API
+    // }
+
+    // const extractFunctions = (text) => {
+
+    //   const functionRegex = /(\b\w+\([^)]*\)|\b\w+\^\w+)/g;
+
+    //   // Check if the word "graph" is in the sentence
+    //   if (!text.toLowerCase().includes('graph')) {
+    //     return []; // Return an empty array if "graph" is not present
+    //   }
+
+    //   // Find all matches for the function pattern
+    //   const matches = text.match(functionRegex);
+
+    //   // If there are no matches, return an empty array
+    //   if (!matches) {
+    //     return [];
+    //   }
+
+    //   // Filter out any false positives if necessary, and return the matches
+    //   return matches.filter((match) => {
+    //     // Additional filtering logic can be added here if needed
+    //     return true;
+    //   });
+    // };
+
     // Create a new user message
     const userMessage = {
       text: inputText,
@@ -71,8 +104,17 @@ const Chat = () => {
 
   const simulateBackendResponse = async (userMessageText) => {
     try {
-      const response = await axios.post('http://127.0.0.1:5000/api/ask', { question: userMessageText });
+      // idk how to differentiate system state rn so just having it predefined
+      const systemState = 'your system state here'; // Replace with actual system state
+
+      // Send both the question and system state to the backend
+      const response = await axios.post('http://127.0.0.1:5000/api/ask', {
+        question: userMessageText,
+        system: systemState,
+      });
+
       return response.data.response;
+
     } catch (error) {
       console.error('Error fetching response from backend:', error);
       return "Sorry, I couldn't process your request.";
@@ -126,7 +168,7 @@ const Chat = () => {
         <button onClick={handleOpenKeyboard}>Open Math Keyboard</button>
       </div>
       {showKeyboard && (
-        <MathKeyboard onSymbolClick={handleInsertMath} />
+        <MathKeyboard onMathInput={handleInsertMath} />
       )}
     </div>
   );

@@ -1,35 +1,41 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from transformers import GPTNeoForCausalLM, GPT2Tokenizer
-
-# gpt 2 medium used for testing because I don't need to manually
-# install a bin file containing a pre-trained model
+import subprocess
 
 app = Flask(__name__)
 CORS(app)
-
-# Load pre-trained GPT-2 model and tokenizer
-model_name = "EleutherAI/gpt-neo-1.3B"
-model = GPTNeoForCausalLM.from_pretrained(model_name)
-tokenizer = GPT2Tokenizer.from_pretrained(model_name)
 
 
 @app.route("/api/ask", methods=["POST"])
 def ask():
     question = request.json.get("question")
-    response = generate_response(question)
+    system_state = request.json.get("system", "default system state")
+
+    response = generate_response(question, system_state)
     return jsonify({"response": response})
 
 
-def generate_response(prompt):
-    input_ids = tokenizer.encode(prompt, return_tensors="pt")
-    output = model.generate(
-        input_ids,
-        max_length=150,
-        num_return_sequences=1,
-        pad_token_id=tokenizer.eos_token_id,
-    )
-    response = tokenizer.decode(output[0], skip_special_tokens=True)
+def generate_response(prompt, system_state):
+    # Constructing the command to call the language model
+    # command = f"llm -m l2c '{prompt}' --system '{system_state}'"
+    command = f"echo {prompt}"
+
+    try:
+        # Run the command and get the output
+        process = subprocess.run(
+            command,
+            shell=True,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
+        )
+        response = process.stdout
+    except subprocess.CalledProcessError as e:
+        # error message
+        response = e.stderr
+        # not sure how to handle the error yet
+
     return response
 
 
