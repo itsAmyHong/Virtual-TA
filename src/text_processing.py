@@ -20,7 +20,7 @@ def split_text(raw_text: str):
     • raw_text: The raw text extracted from the PDF.
     • returns: A list containing chunks of text.
     """
-    text_splitter = RecursiveCharacterTextSplitter( 
+    text_splitter = RecursiveCharacterTextSplitter(
         #separator="\n",
         is_separator_regex = False,
         chunk_size=200, # The number of tokens per chunk
