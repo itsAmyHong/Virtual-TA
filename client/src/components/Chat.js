@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import MathKeyboard from './MathKeyboard';
 
-
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
@@ -20,16 +19,17 @@ const Chat = () => {
 
   const handleInputKeyPress = (e) => {
     if (e.key === 'Enter') {
-      handleSendMessage();
+      e.preventDefault(); // Prevent form submission on Enter key press
+      handleSendMessage(inputText);
     }
   };
 
-  const handleSendMessage = () => {
-    if (inputText.trim() === '') return;
+  const handleSendMessage = (text) => {
+    if (text.trim() === '') return;
 
     // Create a new user message
     const userMessage = {
-      text: inputText,
+      text: text,
       sender: senderName,
     };
 
@@ -38,6 +38,21 @@ const Chat = () => {
 
     // Clear the input field
     setInputText('');
+
+    if (showKeyboard) {
+      setShowKeyboard(false);
+    }
+  };
+
+  const handleInsertMath = (math) => {
+    // Append the math symbol to the existing input text only when there's no existing math symbol
+    setInputText((prevText) => {
+      if (prevText && !prevText.endsWith(' ')) {
+        return prevText + math;
+      } else {
+        return prevText + ' ' + math;
+      }
+    });
   };
 
   useEffect(() => {
@@ -46,52 +61,38 @@ const Chat = () => {
     if (latestMessage && latestMessage.sender === senderName) {
       const userMessageText = latestMessage.text;
 
-      const fetchBotResponse = async () => {
-        // Fetch data from the backend
-        const responseText = await simulateBackendResponse(userMessageText);
-
-        // Create a new bot message
+      // Simulate TA's response after a delay when the user hits Enter
+      if (userMessageText.trim() !== '') {
+        const taResponse = "Sorry, I couldn't process your request.";
         const botResponse = {
-          text: responseText,
+          text: taResponse,
           sender: botName,
         };
 
-        // Update the messages array with the bot's response
-        setMessages([...messages, botResponse]);
-      };
-
-      fetchBotResponse();
+        setTimeout(() => {
+          setMessages([...messages, botResponse]);
+        }, 1000);
+      }
     }
-  }, [messages]);
+  }, [messages, senderName, botName]);
 
-  const simulateBackendResponse = async (userMessageText) => {
-    try {
-      const response = await axios.post('http://127.0.0.1:5000/api/ask', { question: userMessageText });
-      return response.data.response;
-    } catch (error) {
-      console.error('Error fetching response from backend:', error);
-      return "Sorry, I couldn't process your request.";
-    }
-  };
-
+  // Scroll to the bottom of the message container
   useEffect(() => {
-    // Scroll to the bottom of the message container
     if (messageContainerRef.current) {
       messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
   const handleOpenKeyboard = () => {
-    setShowKeyboard(!showKeyboard);
+    setShowKeyboard(true);
   };
 
-  const handleInsertMath = (math) => {
-    setInputText((prevInput) => prevInput + math);
+  const handleCloseKeyboard = () => {
+    setShowKeyboard(false);
   };
 
   return (
     <div className="chat-container">
-
       <div className="message-container" ref={messageContainerRef}>
         {messages.slice().reverse().map((message, index) => (
           <div
@@ -115,7 +116,9 @@ const Chat = () => {
           onChange={handleInputChange}
           onKeyPress={handleInputKeyPress}
         />
-        <button onClick={handleOpenKeyboard}>Open Math Keyboard</button>
+        <button onClick={showKeyboard ? handleCloseKeyboard : handleOpenKeyboard}>
+          {showKeyboard ? "Close Math Keyboard" : "Open Math Keyboard"}
+        </button>
       </div>
       {showKeyboard && (
         <MathKeyboard onSymbolClick={handleInsertMath} />
