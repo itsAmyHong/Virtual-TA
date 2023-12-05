@@ -5,7 +5,6 @@ from utils.text_processing import extract_text_from_pdf, split_text
 from utils.text_embedding import embed_texts, search_texts
 from utils.llm_interface import text_chat
 #import subprocess
-#from services.ask_question import ask
 
 app = Flask(__name__)
 CORS(app)
