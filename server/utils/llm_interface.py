@@ -3,6 +3,7 @@ from langchain.llms import OpenAI
 import os
 from dotenv import load_dotenv
 import openai
+#from llama_cpp import Llama
 
 # Load environment variables
 load_dotenv()
@@ -18,6 +19,7 @@ def text_chat(relevant_texts, query: str):
     • returns: The model's response to the query.
     """
     llm = OpenAI(temperature=0) # LLM of choice; swap out with Llama2
+    #llm = Llama(model_path="llama-2-7b-chat.Q4_K_M.gguf")
     chain = load_qa_chain(llm, chain_type="stuff")
     
     response = chain.run({'input_documents': relevant_texts, 'question': query})
