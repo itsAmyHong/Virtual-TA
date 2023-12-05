@@ -1,0 +1,201 @@
+/* App.css */
+
+.App {
+  display: flex;
+  height: 100vh;
+  margin: 0;
+  background-color: #f4f4f4;
+  overflow-x: hidden;
+  position: relative;
+}
+
+#main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.center-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left:120px;
+  width: 100%; 
+}
+
+.sidenav {
+  height: 98vh;
+  width: 250px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #050509;
+  overflow-x: hidden;
+  padding-top: 30px;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-sessions-container {
+  max-height: calc(100% - 120px); /* Adjust the value to fit your design */
+  overflow-y: auto;
+}
+
+.new-chat-btn {
+  background-color: #050509; 
+  color: #c5c5d2;
+  border: 1px solid #c5c5d2; 
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 15px;
+  margin-left: 15px;
+}
+
+.new-chat-btn:hover {
+  background-color: #40414f; /* Hover color for the new chat button */
+}
+
+.chat-sessions p {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s; 
+  color: #c5c5d2; /* New chat button text color */
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.chat-sessions p:hover {
+  background-color: #40414f; 
+}
+
+.chat-session p.selected-chat {
+  background-color: #565869;
+}
+
+.chat-session-input {
+  background-color: #050509;
+  color: #c5c5d2;
+  outline: none; 
+  border: none;
+  position: absolute;
+  margin-left: 10px;
+}
+
+.edit-btn {
+  background-color: #050509; 
+  color: #c5c5d2;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s; 
+  margin-left: 20px;
+}
+
+.edit-btn:hover{
+  background-color: #40414f;
+}
+
+.profile-section {
+  padding: 10px;
+  box-sizing: border-box;
+  border-top: 1px solid #c5c5d2;
+  margin-top: auto;
+  width: inherit; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-section p {
+  color: #c5c5d2;
+  margin: 0; /* Remove any default margin */
+}
+
+.profile-btn {
+  background-color: #050509; /* Profile button background color */
+  color: #c5c5d2; /* Profile button text color */
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Smooth transition on hover */
+}
+
+.chat-container {
+  width: 80%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Chat area height */
+  overflow: hidden;
+  margin: 0; /* Remove the top margin to allow the chat to flow to the top */
+  background-color: #f4f4f4; /* Chat area background color */
+}
+
+.message-container {
+  flex-grow: 1;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column-reverse; /* Reverse the flow of messages */
+}
+
+.message {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.user {
+  background-color: #007bff; /* User chat bubble color */
+  color: white;  /* User chat text color */
+  align-self: flex-end;
+}
+
+.bot {
+  background-color: #e0e0e0;  /* Bot chat bubble color */
+  color: #333;  /* Bot chat text color */
+  align-self: flex-start;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin: 10px;
+  border-top: 1px solid #ccc; 
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.chat-session input[type="text"] {
+  border: none !important;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.profile-section button:hover{
+  background-color: #40414f;
+}
